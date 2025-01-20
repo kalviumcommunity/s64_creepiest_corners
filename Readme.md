@@ -4,7 +4,7 @@ Project Title:
 ---
 
 Project Summary:
-Curation of the most weird and inexplicable things that the Internet has to offer on a personalized platform, presenting lists that fit one's own browsing. A user logs in to browse creepy videos, bizarre urban legends, crime-infested websites, or really just any kind of phenomenon that has puzzled our curious minds. The lists will be auto-generated according to the preferences or past interactions of the user in order to create a compelling experience and element of eeriness. The goal of the project is to entertain and arouse curiosity with respect to strange digital corners.
+Curation of the most weird and inexplicable things that the Internet has to offer on a personalized platform, presenting lists that fit one's own browsing. A user logs in to browse creepy videos, bizarre urban legends, crime-infested websites, or really just any kind of phenomenon that has puzzled our curious minds. The lists will be auto-generated according to the preferences or past interactions of the user in order to create a compelling experience and element of fearness. The goal of the project is to entertain and arouse curiosity with respect to strange digital corners.
 
 ---
  
