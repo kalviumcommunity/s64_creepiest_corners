@@ -34,6 +34,7 @@ Front-End:
 This project is interesting because it brings together creativity and technology, which is something of universal interest to people, the strange and mysterious. It is also trying to add some value by getting users engaged in the community through common special interests for internet oddities. Essentially, through working on it, and upon successful completion, I'm aiming to know how to integrate more engaging highs into a platform. 
 
 
+**------**
 
 
 
