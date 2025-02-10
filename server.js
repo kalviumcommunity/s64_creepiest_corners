@@ -1,21 +1,31 @@
-const express = require('express');
-const app = express();
-const dataBase = require('./database/database');
 require('dotenv').config();
+const express = require('express');
+const { MongoClient } = require('mongodb');
 
-// Route for /ping with basic error handling
-app.get('/ping', (req, res) => {
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+const client = new MongoClient(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+
+let dbStatus = 'Disconnected';
+
+async function connectDB() {
     try {
-        res.send('Pong!');
+        await client.connect();
+        dbStatus = 'Connected';
+        console.log('MongoDB Connected');
     } catch (error) {
-        res.status(500).send('An error occurred!');
+        dbStatus = 'Error';
+        console.error('MongoDB Connection Error:', error);
     }
+}
+connectDB();
+
+app.get('/', (req, res) => {
+    res.send(`Database Status: ${dbStatus}`);
 });
 
-dataBase();
-// Use an environment variable for the port with a fallback to 8000
-const PORT = process.env.PORT || 8000;
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
