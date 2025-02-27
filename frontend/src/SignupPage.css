@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
+body {
+    background-color: #0d0d0d; /* Dark background */
+    color: #eee;
+    font-family: 'Creepster', cursive; /* Horror-style font */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.signup-container {
+    background: linear-gradient(135deg, #1a1a1a, #000000);
+    border: 2px solid #870404;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(105, 2, 2, 0.6);
+    padding: 30px;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    animation: flicker 2s infinite alternate;
+}
+
+@keyframes flicker {
+    0% { box-shadow: 0 0 10px rgba(89, 33, 33, 0.6); }
+    100% { box-shadow: 0 0 30px rgba(119, 2, 2, 0.9); }
+}
+
+.signup-title {
+    font-size: 32px;
+    color: #540404;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #990000;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #ff3333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #222;
+    color: #ff0000;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    border-color: #ff3333;
+    box-shadow: 0 0 10px #ff3333;
+}
+
+.signup-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    background-color: #ff0000;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    font-family: 'Creepster', cursive;
+}
+
+.signup-button:hover {
+    background-color: #990000;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #650303;
+}
+
+.error-message {
+    color: #ff4444;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.login-text {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.login-link {
+    color: #420b0b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+/* Adding spooky glowing effects */
+@keyframes spookyGlow {
+    0% { text-shadow: 0 0 5px red, 0 0 10px darkred; }
+    50% { text-shadow: 0 0 15px red, 0 0 30px darkred; }
+    100% { text-shadow: 0 0 5px red, 0 0 10px darkred; }
+}
+
+h2, .login-text {
+    animation: spookyGlow 2s infinite alternate;
+}
