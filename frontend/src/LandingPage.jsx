@@ -1,39 +1,34 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
-import background from "./assets/bg3.png"; // Ensure this path is correct
+import background from "./assets/bg3.png"; // Ensure the image path is correct
 
 const LandingPage = () => {
-  const [showPopup, setShowPopup] = useState(true);
-  const [accessGranted, setAccessGranted] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const navigate = useNavigate();
 
-  const handleYesClick = () => {
-    setAccessGranted(true);
-    setShowPopup(false);
-  };
-
-  const handleNoClick = () => {
-    alert("Access Denied. You must be 18+ to access this website.");
-    setShowPopup(false);
+  const handleVerification = (isAllowed) => {
+    if (isAllowed) {
+      setIsVerified(true);
+    } else {
+      alert("Access Denied. You must be 18+ to access this website.");
+    }
   };
 
   return (
     <>
-      {/* Age Verification Pop-Up */}
-      {showPopup && (
+      {!isVerified ? (
         <div className="age-verification-popup">
           <div className="popup-content">
             <h2>Age Verification</h2>
             <p>Are you 18 years or older?</p>
             <div className="button-container">
-              <button onClick={handleYesClick}>Yes, I am 18+</button>
-              <button onClick={handleNoClick}>No, I am under 18</button>
+              <button onClick={() => handleVerification(true)}>Yes, I am 18+</button>
+              <button onClick={() => handleVerification(false)}>No, I am under 18</button>
             </div>
           </div>
         </div>
-      )}
-
-      {/* Landing Page Content */}
-      {accessGranted && (
+      ) : (
         <div
           className="landing-container"
           style={{
@@ -47,9 +42,9 @@ const LandingPage = () => {
           <header className="hero-section">
             <h1>Welcome to The Creepiest Corners</h1>
             <p>Discover the strangest and most bizarre parts of the internet.</p>
-            <a href="#explore" className="cta-button">
+            <button className="cta-button" onClick={() => navigate("/login")}>
               Explore Now
-            </a>
+            </button>
           </header>
 
           <main className="features-section">
@@ -75,3 +70,51 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
+
+
+// import React, { useEffect, useState } from 'react';
+// import './LandingPage.css';
+
+// function LandingPage() {
+//   // State to store the entities fetched from the backend
+//   const [entities, setEntities] = useState([]);
+
+//   // Fetch entities from the backend when the component mounts
+//   useEffect(() => {
+//     fetch('http://localhost:3000/api/entities')
+//       .then(response => {
+//         if (!response.ok) {
+//           throw new Error('Network response was not ok');
+//         }
+//         return response.json();
+//       })
+//       .then(data => {
+//         setEntities(data); // Set the fetched data to the state
+//       })
+//       .catch(error => {
+//         console.error('Error fetching data:', error);
+//       });
+//   }, []); // Empty dependency array ensures this runs only once on mount
+
+//   return (
+//     <div className="landing-page">
+//       <h1>Welcome to the Landing Page</h1>
+//       <h2>Entities List</h2>
+//       {entities.length > 0 ? (
+//         <div className="entities-container">
+//           {entities.map(entity => (
+//             <div key={entity.id} className="entity-card">
+//               <h3>{entity.name}</h3>
+//               <p>{entity.description}</p>
+//             </div>
+//           ))}
+//         </div>
+//       ) : (
+//         <p>No entities found.</p>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default LandingPage;
