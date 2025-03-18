@@ -1,5 +1,6 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
+const Entity = require('./models/Entity'); // Assuming you have an Entity model
 
 const router = express.Router();
 
@@ -68,6 +69,16 @@ module.exports = (db) => {
             res.status(200).json({ message: 'Item deleted' });
         } catch (error) {
             res.status(500).json({ error: error.message });
+        }
+    });
+
+    // Fetch Entities
+    router.get('/entities', async (req, res) => {
+        try {
+            const entities = await Entity.find(); // Fetch entities from MongoDB using Mongoose
+            res.status(200).json(entities);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching entities', error });
         }
     });
 

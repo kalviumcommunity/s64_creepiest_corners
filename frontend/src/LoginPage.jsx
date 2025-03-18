@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import './LoginPage.css';
 
-const LoginPage = () => {
+const LoginPage = ({ setIsAuthenticated }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     rememberMe: false,
   });
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(''); // Error message
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -19,6 +22,8 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true
+    setError(''); // Clear previous errors
 
     try {
       const response = await fetch('http://localhost:8000/api/login', {
@@ -26,7 +31,10 @@ const LoginPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       });
 
       const text = await response.text(); // Get raw response
@@ -38,20 +46,34 @@ const LoginPage = () => {
           throw new Error(data.message || 'Login failed');
         }
 
+        // Login successful
         alert(`Login successful! Welcome, The world of creep hails you!`);
+
+        // Save token or user data to localStorage (optional)
+        localStorage.setItem('token', data.token); // Example: Save token
+        
+        // Update authentication state
+        setIsAuthenticated(true);
+
+        // Redirect to the home page
+        navigate('/home');
       } catch (error) {
-        console.error('Response was not JSON:', text);
-        alert('Unexpected response from server. Please try again.');
+        console.error('Response was not JSON:', error);
+        setError('Unexpected response from server. Please try again.');
       }
     } catch (error) {
       console.error('Error during login:', error);
-      alert(error.message || 'Login failed. Please try again.');
+      setError(error.message || 'Login failed. Please try again.');
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
   return (
     <div className="login-container">
       <h2 className="login-title">Login</h2>
+
+      {error && <p className="error-message">{error}</p>} {/* Display error message */}
 
       <form onSubmit={handleSubmit}>
         <div className="input-group">
@@ -62,6 +84,7 @@ const LoginPage = () => {
             value={formData.email}
             onChange={handleChange}
             required
+            disabled={loading} // Disable input while loading
           />
         </div>
 
@@ -73,6 +96,7 @@ const LoginPage = () => {
             value={formData.password}
             onChange={handleChange}
             required
+            disabled={loading} // Disable input while loading
           />
         </div>
 
@@ -83,13 +107,16 @@ const LoginPage = () => {
               name="rememberMe"
               checked={formData.rememberMe}
               onChange={handleChange}
+              disabled={loading} // Disable checkbox while loading
             />
             Remember me
           </label>
           <a href="#" className="forgot-password">Forgot password?</a>
         </div>
 
-        <button type="submit" className="login-button">Sign In</button>
+        <button type="submit" className="login-button" disabled={loading}>
+          {loading ? 'Signing In...' : 'Sign In'} {/* Show loading text */}
+        </button>
       </form>
 
       <p className="signup-text">
