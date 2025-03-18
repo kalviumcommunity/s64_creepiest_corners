@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import './SignUpPage.css'; // Create this CSS file for styling
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -44,9 +46,12 @@ const SignUpPage = () => {
         throw new Error(data.message || 'Registration failed');
       }
 
-      alert('Registration successful! Please log in.');
+      alert('Registration successful! Redirecting to login page...');
       setError('');
       setFormData({ email: '', password: '', confirmPassword: '' }); // Reset form
+      
+      // Redirect to login page
+      navigate('/login');
     } catch (error) {
       console.error('Error during registration:', error);
       setError(error.message || 'Registration failed. Please try again.');
@@ -95,7 +100,7 @@ const SignUpPage = () => {
       </form>
 
       <p className="login-text">
-        Already have an account? <a href="/login" className="login-link">Log In</a>
+        Already have an account? <Link to="/login" className="login-link">Log In</Link>
       </p>
     </div>
   );
