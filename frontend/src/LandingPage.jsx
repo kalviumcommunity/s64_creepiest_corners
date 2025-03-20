@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 import background from "./assets/bg3.png"; // Ensure the image path is correct
 
 const LandingPage = () => {
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(false); // Set to false to show age verification popup
   const navigate = useNavigate();
 
   const handleVerification = (isAllowed) => {

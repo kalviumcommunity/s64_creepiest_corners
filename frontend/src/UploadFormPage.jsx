@@ -57,9 +57,10 @@ const UploadFormPage = () => {
     setError('');
     
     const formData = new FormData();
-    selectedFiles.forEach(file => {
-      formData.append('media', file);
-    });
+    // Backend expects a single file with key 'media'
+    if (selectedFiles.length > 0) {
+      formData.append('media', selectedFiles[0]);
+    }
     
     if (caption) {
       formData.append('caption', caption);
@@ -97,7 +98,36 @@ const UploadFormPage = () => {
       alert('Files uploaded successfully!');
     } catch (error) {
       console.error('Error uploading files:', error);
-      setError(error.response?.data?.message || 'Error uploading files. Please try again.');
+      
+      // Check if it's a token-related error
+      const errorMessage = error.response?.data?.message || '';
+      if (errorMessage.toLowerCase().includes('token') || 
+          errorMessage.toLowerCase().includes('unauthorized') ||
+          error.response?.status === 401 ||
+          error.response?.status === 403) {
+        
+        setError('Authentication error: Your session may have expired. Please log out and log back in to continue uploading.');
+        
+        // Add a logout button to the error message
+        const logoutButton = document.createElement('button');
+        logoutButton.innerText = 'Log Out';
+        logoutButton.style.marginLeft = '10px';
+        logoutButton.onclick = () => {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        };
+        
+        // Append the button to the error message element
+        setTimeout(() => {
+          const errorElement = document.querySelector('[style*="errorMessage"]');
+          if (errorElement) {
+            errorElement.appendChild(logoutButton);
+          }
+        }, 100);
+        
+      } else {
+        setError(errorMessage || 'Error uploading files. Please try again.');
+      }
     } finally {
       setUploading(false);
     }

@@ -32,7 +32,7 @@ function App() {
       {isAuthenticated && (
           <div style={styles.sidebar}>
             <div style={styles.logo}>
-              <h2 style={styles.logoText}>CC</h2>
+              <h2 style={styles.logoText}>Creepiest Corners</h2>
             </div>
             <nav style={styles.nav}>
               <Link to="/home" style={styles.navItem}>
