@@ -4,7 +4,7 @@ const NotificationsPage = () => {
   // Mock notifications data
   const [notifications] = useState([
     {
-      id: 1,
+      _id: '1', // Use _id to be consistent with MongoDB
       type: 'like',
       user: {
         username: 'ghosthunter',
@@ -16,7 +16,7 @@ const NotificationsPage = () => {
       postPreview: 'The sounds I recorded in the east wing defy explanation...'
     },
     {
-      id: 2,
+      _id: '2', // Use _id to be consistent with MongoDB
       type: 'comment',
       user: {
         username: 'midnightwalker',
@@ -29,7 +29,7 @@ const NotificationsPage = () => {
       postPreview: 'This entity followed me home from my investigation last night.'
     },
     {
-      id: 3,
+      _id: '3', // Use _id to be consistent with MongoDB
       type: 'follow',
       user: {
         username: 'paranormalexpert',
@@ -40,7 +40,7 @@ const NotificationsPage = () => {
       timestamp: '1 day ago'
     },
     {
-      id: 4,
+      _id: '4', // Use _id to be consistent with MongoDB
       type: 'mention',
       user: {
         username: 'hauntedhistorian',
@@ -52,7 +52,7 @@ const NotificationsPage = () => {
       timestamp: '2 days ago'
     },
     {
-      id: 5,
+      _id: '5', // Use _id to be consistent with MongoDB
       type: 'like',
       user: {
         username: 'cryptidchaser',
@@ -87,7 +87,7 @@ const NotificationsPage = () => {
       
       <div style={styles.notificationsContainer}>
         {notifications.map(notification => (
-          <div key={notification.id} style={styles.notificationCard}>
+          <div key={notification._id} style={styles.notificationCard}>
             <div style={styles.iconContainer}>
               {renderNotificationIcon(notification.type)}
             </div>

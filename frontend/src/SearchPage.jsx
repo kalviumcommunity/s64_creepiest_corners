@@ -8,7 +8,7 @@ const SearchPage = () => {
   // Mock data for search results
   const mockPosts = [
     {
-      id: 1,
+      _id: '1', // Use _id to be consistent with MongoDB
       username: 'ghosthunter',
       content: 'Found this creepy abandoned hospital last night. The sounds coming from the third floor were unexplainable...',
       imageUrl: 'https://images.unsplash.com/photo-1635224983665-8f0b34a82487',
@@ -17,7 +17,7 @@ const SearchPage = () => {
       comments: 13
     },
     {
-      id: 2,
+      _id: '2', // Use _id to be consistent with MongoDB
       username: 'midnightwalker',
       content: 'This strange figure appears in my photos whenever I visit this forest. No one else can see it.',
       imageUrl: 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3',
@@ -26,7 +26,7 @@ const SearchPage = () => {
       comments: 27
     },
     {
-      id: 3,
+      _id: '3', // Use _id to be consistent with MongoDB
       username: 'paranormalexpert',
       content: 'The legend of the crying woman has been documented in over 17 countries. Here\'s my encounter from last week.',
       imageUrl: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c',
@@ -79,7 +79,7 @@ const SearchPage = () => {
         <div style={styles.resultsContainer}>
           {searchResults.length > 0 ? (
             searchResults.map(post => (
-              <div key={post.id} style={styles.postCard}>
+              <div key={post._id} style={styles.postCard}>
                 <div style={styles.postHeader}>
                   <h3 style={styles.username}>@{post.username}</h3>
                   <span style={styles.timestamp}>{post.timestamp}</span>
