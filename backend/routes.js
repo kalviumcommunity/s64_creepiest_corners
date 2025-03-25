@@ -71,5 +71,18 @@ module.exports = (db) => {
         }
     });
 
+    // Fetch posts by user ID
+    router.get('/users/:userId/posts', async (req, res) => {
+        try {
+            const posts = await collection.find({ created_by: req.params.userId }).toArray();
+            if (!posts.length) {
+                return res.status(404).json({ message: 'No posts found for this user' });
+            }
+            res.status(200).json(posts);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
     return router;
 };

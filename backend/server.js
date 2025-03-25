@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const dataBase = require('./database/database');
+const { dataBase } = require('./database/database');
 
 const app = express();
 
