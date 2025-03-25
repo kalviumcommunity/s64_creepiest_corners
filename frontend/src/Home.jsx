@@ -98,6 +98,7 @@ const Home = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem('token');
+        console.log('Token from localStorage:', token);
         
         if (!token) {
           setError('You must be logged in to view this page');
@@ -108,31 +109,47 @@ const Home = () => {
         }
         
         // Fetch user profile
-        const profileResponse = await axios.get('http://localhost:8000/api/user/profile', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        
-        const userData = profileResponse.data.user;
-        setUser({
-          username: userData.username || 'user',
-          displayName: userData.displayName || 'User',
-          profilePicture: userData.profilePicture || 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131',
-        });
+        console.log('Making request to /api/user/profile with token:', token);
+        try {
+          const profileResponse = await axios.get('http://localhost:8000/api/user/profile', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          console.log('Profile response:', profileResponse);
+          
+          const userData = profileResponse.data.user;
+          setUser({
+            username: userData.username || 'user',
+            displayName: userData.displayName || 'User',
+            profilePicture: userData.profilePicture || 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131',
+          });
+        } catch (profileError) {
+          console.error('Error fetching profile:', profileError);
+          console.error('Error response:', profileError.response);
+          // Continue with mock data for user
+        }
         
         // Fetch all posts
-        const postsResponse = await axios.get('http://localhost:8000/api/posts', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        try {
+          const postsResponse = await axios.get('http://localhost:8000/api/posts', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          // Combine API data with mock data
+          const apiPosts = postsResponse.data || [];
+          setFeedPosts([...apiPosts, ...mockPosts]);
+        } catch (postsError) {
+          console.error('Error fetching posts:', postsError);
+          // Use mock data if API fails
+          setFeedPosts(mockPosts);
+        }
         
-        // Combine API data with mock data
-        const apiPosts = postsResponse.data || [];
-        setFeedPosts([...apiPosts, ...mockPosts]);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error in fetchData:', error);
         setError('Error fetching data. Please try again.');
         
         // Still display mock data even if API fails
@@ -226,7 +243,7 @@ const Home = () => {
     // try {
     //   await axios.post(`http://localhost:8000/api/posts/${postId}/like`, {}, {
     //     headers: {
-    //       Authorization: `Bearer ${token}`
+    //       'Authorization': `Bearer ${token}`
     //     }
     //   });
     // } catch (error) {
@@ -278,7 +295,7 @@ const Home = () => {
     //     text: commentText
     //   }, {
     //     headers: {
-    //       Authorization: `Bearer ${token}`
+    //       'Authorization': `Bearer ${token}`
     //     }
     //   });
     // } catch (error) {

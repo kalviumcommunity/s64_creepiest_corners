@@ -49,7 +49,7 @@ const ProfilePage = () => {
         // Fetch user profile
         const profileResponse = await axios.get('http://localhost:8000/api/user/profile', {
           headers: {
-            Authorization: `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
           }
         });
         
@@ -66,7 +66,7 @@ const ProfilePage = () => {
         // Fetch user posts
         const postsResponse = await axios.get(`http://localhost:8000/api/posts/user/${userData._id}`, {
           headers: {
-            Authorization: `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
           }
         });
         
@@ -153,7 +153,7 @@ const ProfilePage = () => {
       // API call
       await axios.post(`http://localhost:8000/api/posts/${postId}/like`, {}, {
         headers: {
-          Authorization: `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         }
       });
     } catch (error) {
@@ -208,7 +208,7 @@ const ProfilePage = () => {
         text: commentText
       }, {
         headers: {
-          Authorization: `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         }
       });
     } catch (error) {
@@ -259,7 +259,7 @@ const ProfilePage = () => {
       // Make API call to update the user profile
       await axios.put('http://localhost:8000/api/user/profile', editFormData, {
         headers: {
-          Authorization: `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         }
       });
     } catch (error) {

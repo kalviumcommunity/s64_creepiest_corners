@@ -50,7 +50,12 @@ const LoginPage = ({ setIsAuthenticated }) => {
         alert(`Login successful! Welcome, The world of creep hails you!`);
 
         // Save token or user data to localStorage (optional)
+        console.log('Saving token to localStorage:', data.token);
         localStorage.setItem('token', data.token); // Example: Save token
+        
+        // Verify token was saved correctly
+        const savedToken = localStorage.getItem('token');
+        console.log('Token retrieved from localStorage:', savedToken);
         
         // Update authentication state
         setIsAuthenticated(true);
