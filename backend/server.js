@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const fs = require('fs');
+const cookieParser = require('cookie-parser');
 const postRoutes = require('./PostRoutes');
 
 // JWT Secret Key
@@ -13,8 +14,12 @@ const JWT_SECRET = process.env.JWT_SECRET || 'creepiest-corners-secret-key';
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Frontend URL
+  credentials: true // Allow cookies to be sent with requests
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 // Database connection
 require('./database/database')();
@@ -63,7 +68,22 @@ app.post('/api/register', async (req, res) => {
     const newUser = new User({ email, password: hashedPassword });
     await newUser.save();
 
-    res.status(201).json({ message: 'Registration successful', user: newUser });
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: newUser._id, email: newUser.email },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    // Set token in HTTP-only cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    });
+
+    res.status(201).json({ message: 'Registration successful', user: { email: newUser.email } });
   } catch (error) {
     console.error('Error during registration:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -72,9 +92,8 @@ app.post('/api/register', async (req, res) => {
 
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
-  // Get token from Authorization header
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN format
+  // Get token from cookies or Authorization header
+  const token = req.cookies.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
   
   if (!token) {
     return res.status(401).json({ message: 'Access denied. No token provided.' });
@@ -114,15 +133,28 @@ app.post('/api/login', async (req, res) => {
       { expiresIn: '24h' }
     );
 
+    // Set token in HTTP-only cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    });
+
     res.json({ 
       message: 'Login successful', 
-      user: { email: user.email },
-      token
+      user: { email: user.email }
     });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
+});
+
+// ✅ Logout Endpoint
+app.post('/api/logout', (req, res) => {
+  res.clearCookie('token');
+  res.json({ message: 'Logged out successfully' });
 });
 
 // ✅ Protected Route Example (NEW)
