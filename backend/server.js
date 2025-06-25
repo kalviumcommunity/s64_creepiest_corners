@@ -34,6 +34,14 @@ if (!fs.existsSync(uploadsDir)) {
 // Serve uploaded files statically
 app.use('/uploads', express.static(uploadsDir));
 
+// Serve static files from the frontend's dist directory
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// For any other route, serve index.html (for React Router)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
+
 // Use post routes
 app.use('/api', postRoutes);
 
