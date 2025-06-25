@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
-const postRoutes = require('./PostRoutes');
+const postRoutes = require('./postRoutes');
 
 // JWT Secret Key
 const JWT_SECRET = process.env.JWT_SECRET || 'creepiest-corners-secret-key';
@@ -246,7 +246,7 @@ app.put('/api/user/profile', verifyToken, async (req, res) => {
 });
 
 // Start the server
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
